@@ -1,0 +1,32 @@
+﻿@model MetaMask
+
+
+<button id="connectToMetaMask">Connect to MetaMask and Login</button>
+
+<form method="post" asp-action="Login" id="loginForm">
+    <input type="hidden" asp-for="Address" id="metaMaskAddress" />
+    <input type="hidden" asp-for="Signature" id="metaMaskSignature" />
+</form>
+
+<script>
+    const connectToMetaMask = async () => {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+        const signature = await ethereum.request({
+            method: 'eth_sign',
+            params: [address, 'Hello, World!'],
+        });
+        // Send the signature to the server for verification
+        // ...
+        // Prepare data to send
+
+        document.getElementById('metaMaskAddress').value = address;
+        document.getElementById('metaMaskSignature').value = signature;
+
+        // Submit the form
+        document.getElementById('loginForm').submit();
+    };
+
+    document.getElementById('connectToMetaMask').addEventListener('click', connectToMetaMask);
+</script>
+
